@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Ifdruidas">
+    <title>Structure - Home</title>
+	<link href="bootstrap.min.css" rel="stylesheet">
+	<style>
+		body {
+		  background-image: url("img/bg-tile.png");
+		  background-repeat: repeat;
+		}  
+		.gradient {
+			  background-color: black; /* For browsers that do not support gradients */
+			  background-image: linear-gradient(to right, #00f2ff , #A23499); /* Standard syntax (must be last) */
+		} 
+		.fabric
+		{
+			background-color:black;
+			background-image: url("img/brilliant.png");	
+		}
+  </style>  
+</head>
+
+<body class="gradient">
+	<div class="container">
+	<br>
+		<form action="savesetup.html" method="post">
+			<div class="card text-white fabric" >
+				<div class="card-body">
+				<h5>Leitura e padronização dos sensores<br><small><small style="color:#E0A800;">*Forneça todos os detalhes necessários para poder padronizar esse valores e ter a leitura mais precisa</small></small></h5>
+				
+					<br>
+					<h6>Configurações do Wifi</h6>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label for="exampleInputEmail1">SSID do Ponto de Acesso</label>
+								<input type="text" name="fSSID" class="form-control" id="fSSID" aria-describedby="emailHelp" placeholder="Nome da Rede" value="" required>
+								<small id="emailHelp"  class="form-text text-muted">Seu nome SSID do ponto de acesso wifi local.</small>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label for="exampleInputEmail1">Senha da Rede</label>
+								<input type="password" name="fPassword" class="form-control" id="fPassword" aria-describedby="emailHelp" placeholder="Senha" value="" required>
+							</div>
+						</div>
+					</div>
+					
+<h5>Instruções de leitura dos sinais<br><small><small style="color:grey;">No primeiro, ponha o valor atual e no botão ele irar ler</small></small></h5>					
+					<div class="form-group">
+						<label for="exampleInputEmail1">Sensor de Peso</label>
+						<input type="text" name="fSensorName1" class="form-control" id="fSensorName1" aria-describedby="emailHelp" placeholder="Insira o peso em quilos" value="" required>
+					</div>
+					<div class="form-inline">
+						<br><input type="text" name="fSensorIR1" class="form-control" id="fSensorIR1" aria-describedby="emailHelp" placeholder="Valor do sensor" value="" required>
+						  <div class="input-group-append ">
+							<button class="btn btn-outline-info" type="button" onclick="Learnbalance(1)">Leitura</button>
+						  </div>						
+					</div>					
+					<div class="form-group">
+					<br><input type="text" name="fSensorName2" class="form-control" id="fSensorName2" aria-describedby="emailHelp" placeholder="Insira o peso em quilos" value="" required>
+					</div>
+					<div class="form-inline">
+						<input type="text" name="fSensorIR2" class="form-control" id="fSensorIR2" aria-describedby="emailHelp" placeholder="Valor do sensor" value="" >
+						  <div class="input-group-append">
+							<button class="btn btn-outline-info" type="button" onclick="Learnbalance(2)">Leitura</button>
+						  </div>									
+					</div>						
+					<small id="emailHelp"  class="form-text text-muted"> O valor do peso insirido aqui sera usado como referencia para calculos futuros</small>	
+					<div class="form-group">
+						<label for="exampleInputEmail1">Deslocamento</label>
+						<input type="text" name="fSensorName3" class="form-control" id="fSensorName3" aria-describedby="emailHelp" placeholder="Insira o deslocamento em cm" value="" required>
+					</div>
+					<div class="form-inline">
+						<input type="text" name="fSensorIR3" class="form-control" id="fSensorIR3" aria-describedby="emailHelp" placeholder="Valor do sensor" value="" >
+						  <div class="input-group-append">
+							<button class="btn btn-outline-info" type="button" onclick="Learndistance(3)">Leitura</button>
+						  </div>						
+					</div>						
+					
+					<div class="form-group">
+						<br><input type="text" name="fSensorName4" class="form-control" id="fSensorName4" aria-describedby="emailHelp" placeholder="Insira o deslocamento em cm" value="" required>
+					</div>	
+					<div class="form-inline">
+						<input type="text" name="fSensorIR4" class="form-control" id="fSensorIR4" aria-describedby="emailHelp" placeholder="Valor do sensor" value="" >
+						  <div class="input-group-append">
+							<button class="btn btn-outline-info" type="button" onclick="Learndistance(4)">Leitura</button>
+						  </div>						
+					</div>
+					<small id="emailHelp"  class="form-text text-muted"> o valor sera usado para calibrar e consegui medir o deslocamento de forma precisa</small>						
+					<div class="form-group"></div>
+					<button type="submit" class="btn btn-outline-success btn-block">Salvas as consfigurações dos sensores</button>
+					<a href="index.html" class="btn btn-outline-secondary btn-block" role="button">Retornar</a>
+				</div>
+			</div>								
+		</form>
+		<br><br>
+	</div>
+</body>
+
+
+
+
+
+<script>
+LoadFile("fSensorName1.conf");
+LoadFile("fSensorName2.conf");
+LoadFile("fSensorName3.conf");
+LoadFile("fSensorName4.conf");
+
+LoadFile("fSensorIR1.conf");
+LoadFile("fSensorIR2.conf");
+LoadFile("fSensorIR3.conf");
+LoadFile("fSensorIR4.conf");
+
+LoadFile("fSSID.conf");
+LoadFile("fPassword.conf");
+
+function LoadFile(FiletoLoad)
+{
+	//alert("Will now sign in");
+	var HTTP_Response="";
+	var http = new XMLHttpRequest();
+	//var url = "http://127.0.0.1:8080/ESPInterface/" + FiletoLoad ;
+	var url = "http://192.168.4.1/" + FiletoLoad ;
+	var params = '';
+	http.open('POST', url, true);
+
+	//Send the proper header information along with the request
+	http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	http.onreadystatechange = function() {//Call a function when the state changes.
+    if(http.readyState == 4 && http.status == 200) {
+    
+		var ElementID=FiletoLoad.replace(".conf","");
+		HTTP_Response = http.responseText;
+		document.getElementById(ElementID).value  = HTTP_Response
+		//alert(HTTP_Response);
+	}else
+	{
+		//document.getElementById("idLog").innerHTML = "<small>Connection Failed!</small>";
+	}
+	}
+	http.send(params);
+}
+
+function Learnbalance(DeviceNumber)
+{
+	var DeviceNumberToLearn=DeviceNumber;
+	//alert(DeviceNumberToLearn);
+	var ElementID="fSensorIR" + DeviceNumber;
+	document.getElementById(ElementID).value = "Test";
+//alert("Will now sign in");
+	var HTTP_Response="";
+	var http = new XMLHttpRequest();
+	//var url = "http://127.0.0.1:8080/ESPInterface/" + FiletoLoad ;
+	var url = "http://192.168.4.1/Lastbalance";
+	var params = '';
+	http.open('POST', url, true);
+
+	//Send the proper header information along with the request
+	http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	http.onreadystatechange = function() {//Call a function when the state changes.
+    if(http.readyState == 4 && http.status == 200) {
+    
+		
+		HTTP_Response = http.responseText;
+		document.getElementById(ElementID).value = HTTP_Response;
+	}else
+	{
+		//document.getElementById("idLog").innerHTML = "<small>Connection Failed!</small>";
+	}
+	}
+	http.send(params);	
+	
+	
+}
+function Learndistance(DeviceNumber)
+{
+	var DeviceNumberToLearn=DeviceNumber;
+	//alert(DeviceNumberToLearn);
+	var ElementID="fSensorIR" + DeviceNumber;
+	document.getElementById(ElementID).value = "Test";
+//alert("Will now sign in");
+	var HTTP_Response="";
+	var http = new XMLHttpRequest();
+	//var url = "http://127.0.0.1:8080/ESPInterface/" + FiletoLoad ;
+	var url = "http://192.168.4.1/Lastdistance";
+	var params = '';
+	http.open('POST', url, true);
+
+	//Send the proper header information along with the request
+	http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	http.onreadystatechange = function() {//Call a function when the state changes.
+    if(http.readyState == 4 && http.status == 200) {
+    
+		
+		HTTP_Response = http.responseText;
+		document.getElementById(ElementID).value = HTTP_Response;
+	}else
+	{
+		//document.getElementById("idLog").innerHTML = "<small>Connection Failed!</small>";
+	}
+	}
+	http.send(params);	
+	
+	
+}
+
+</script>
+  
+  
+  
+  
